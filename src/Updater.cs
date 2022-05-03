@@ -174,7 +174,8 @@ class Updater
 		while(true)
 		{
 			this._updateTrigger.WaitOne();
-			this.CurrentInstance?.Stop();
+			try { this.CurrentInstance?.Stop(); }
+			catch(Exception ex) { _logger.WriteLine(LogLevel.ERROR, $"Exception while trying to stop child:\n{ex}"); }
 			this.MaybeUpdateFiles();
 			this.BeginKeepMainAlive(_currentArgs!);
 		}
@@ -191,17 +192,22 @@ class Updater
 
 	//TODO(Rennorb): @hammer use the return code 
 	//TODO(Rennorb): @hammer stop when return code is a loader error or at least fall into update cycle for auto recovery on new update
-	void KeepMainAliveThread(object obj) => KeepMainAlive((MainParams)obj);
+	void KeepMainAliveThread(object obj) {
+		var returnCode = KeepMainAlive((MainParams)obj);
+		if(returnCode == 0)
+			_logger.WriteLine("Process exited normally");
+	}
 	int KeepMainAlive(MainParams @params)
 	{
-		_logger.WriteLine("loading assembly");
-		var assemblyContext = new AssemblyLoadContext("Program Context", true);
-		var assembly = assemblyContext.LoadFromAssemblyPath(Path.GetFullPath(Config.ProgramDllPath));
-
 		while(true)
 		{
 			try
 			{
+				_logger.WriteLine("loading assembly");
+				//NOTE(Rennorb): need to actually destroy the context after loop so unload works.
+				var assemblyContext = new AssemblyLoadContext("Program Context", true);
+				var assembly = assemblyContext.LoadFromAssemblyPath(Path.GetFullPath(Config.ProgramDllPath));
+
 				var programType = assembly.ExportedTypes.FirstOrDefault(type => type.Name == "Program");
 				if(programType == null)
 				{
@@ -250,7 +256,10 @@ class Updater
 				IsMainRunning = false;
 				_logger.WriteLine("unloading assembly");
 				assemblyContext.Unload();
-				return returnCode;
+				if(returnCode == 0)
+					return 0;
+				else
+					_logger.WriteLine($"Main crashed with {returnCode}");
 			}
 			catch(Exception ex)
 			{
@@ -268,6 +277,15 @@ class Updater
 		using(var response = _httpClient.GetAsync(_githubUrl).Result)
 		using(var stream = response.Content.ReadAsStream())
 		{
+			if(!response.IsSuccessStatusCode)
+			{
+				if(response.StatusCode == System.Net.HttpStatusCode.NotFound)
+					_logger.WriteLine(LogLevel.ERROR, $"Update request was not found, check that you actually have a release on {Config.GithubRepoId}");
+				using(var reader = new StreamReader(stream))
+					_logger.WriteLine(LogLevel.ERROR, $"Issue with update request:\n{reader.ReadToEnd()}");
+				return;
+			}
+
 			jdoc = JsonDocument.Parse(stream);
 		}
 		var assetsNode = jdoc.RootElement.GetProperty("assets");

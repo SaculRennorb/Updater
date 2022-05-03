@@ -1,6 +1,11 @@
 # Updater
 
-You want to change your program to compile to a dll. This dll should have a class called `Program` with a method with the signature `public int Main(string[] args, Action requestStop)` and `public void Stop()`.
+You want to change your program to compile to a dll. This dll must have a class called `Program` with the following signatures defined:
+- a constructor `public Program(Action requestStop)`,
+- a method `public int Main(string[] args)`,
+- a method `public void ConsoleCommandReceived(string command)` and
+- a method `public void Stop()`.
+
 You will also want to add a launch config to your actual project somewhere along the lines of
 ```json
 {

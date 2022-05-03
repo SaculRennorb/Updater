@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Rennorb.Updater</id>
         <version>1.0.0</version>
@@ -8,12 +8,24 @@
         <projectUrl>https://github.com/SaculRennorb/Updater</projectUrl>
         <description>an updater</description>
         <dependencies>
-            <dependency id="Rennorb.Logging" version="1.0.0" />
+            <group targetFramework="net6.0">
+                <dependency id="Rennorb.Logging" version="1.1.0" />
+            </group>
         </dependencies>
     </metadata>
     <files>
-      <file src="bin/publish/Release/net6.0/Rennorb.Updater.exe" target="content" />
-      <file src="bin/publish/Release/net6.0/Rennorb.Updater.dll" target="content" />
-      <file src="bin/publish/Release/net6.0/Rennorb.Updater.pdb" target="content" />
+      <file src="bin/publish/Release/net6.0/Rennorb.Updater.exe" target="build/net6.0/rel/" />
+      <file src="bin/publish/Release/net6.0/Rennorb.Updater.dll" target="build/net6.0/rel/" />
+      <file src="bin/publish/Release/net6.0/Rennorb.Updater.pdb" target="build/net6.0/rel/" />
+      <file src="bin/publish/Release/net6.0/Rennorb.Updater.deps.json" target="build/net6.0/rel/" />
+      <file src="bin/publish/Release/net6.0/Rennorb.Updater.runtimeconfig.json" target="build/net6.0/rel/" />
+
+      <file src="bin/publish/Debug/net6.0/Rennorb.Updater.exe" target="build/net6.0/dbg/" />
+      <file src="bin/publish/Debug/net6.0/Rennorb.Updater.dll" target="build/net6.0/dbg/" />
+      <file src="bin/publish/Debug/net6.0/Rennorb.Updater.pdb" target="build/net6.0/dbg/" />
+      <file src="bin/publish/Debug/net6.0/Rennorb.Updater.deps.json" target="build/net6.0/dbg/" />
+      <file src="bin/publish/Debug/net6.0/Rennorb.Updater.runtimeconfig.json" target="build/net6.0/dbg/" />
+
+      <file src="Rennorb.Updater.targets" target="build" />
     </files>
 </package>
