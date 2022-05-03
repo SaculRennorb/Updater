@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Run Updater": {
+      "commandName": "Project"
+    },
+    "Sign Binaries": {
+      "commandName": "Project",
+      "commandLineArgs": "--sign"
+    }
+  }
+}
