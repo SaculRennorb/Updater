@@ -1,0 +1,1 @@
+nuget pack -properties Configuration=Release -OutputDirectory bin/publish/nuget/Release/net6.0

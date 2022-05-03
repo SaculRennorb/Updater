@@ -6,12 +6,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>Rennorb.Updater</RootNamespace>
-    <BaseOutputPath>../../bin</BaseOutputPath>
-  </PropertyGroup>
+    <BaseOutputPath>../bin</BaseOutputPath>
 
-  <ItemGroup>
-    <ProjectReference Include="..\*\*.csproj" Exclude="..\*\Rennorb.Updater.csproj" />
-  </ItemGroup>
+    <PackageId>Rennorb.Updater</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Rennorb</Authors>
+    <Company></Company>
+    <DebugSymbols>true</DebugSymbols>
+    <EmbedAllSources>true</EmbedAllSources>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Rennorb.Logging" Version="1.0.0" />

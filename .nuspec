@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>Rennorb.Updater</id>
+        <version>1.0.0</version>
+        <authors>Rennorb</authors>
+        <owners>Rennorb</owners>
+        <projectUrl>https://github.com/SaculRennorb/Updater</projectUrl>
+        <description>an updater</description>
+        <dependencies>
+            <dependency id="Rennorb.Logging" version="1.0.0" />
+        </dependencies>
+    </metadata>
+    <files>
+      <file src="bin/publish/Release/net6.0/Rennorb.Updater.exe" target="content" />
+      <file src="bin/publish/Release/net6.0/Rennorb.Updater.dll" target="content" />
+      <file src="bin/publish/Release/net6.0/Rennorb.Updater.pdb" target="content" />
+    </files>
+</package>
